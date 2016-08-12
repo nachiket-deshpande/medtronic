@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>15.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Page that allows users to selected open AGU Builder milestones for specified contact in order to generate a set of tasks</description>
+    <label>Select AGU Task</label>
+</ApexPage>

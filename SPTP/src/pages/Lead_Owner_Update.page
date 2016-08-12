@@ -1,0 +1,51 @@
+<apex:page docType="html-5.0"  showheader="false" sidebar="false" standardStylesheets="true" standardController="Lead"  extensions="LeadOwnerUpdateController"> 
+    <title>Change Lead</title>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    
+    <!-- jQuery Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1; user-scalable=no" />
+    <apex:stylesheet value="https://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+    <apex:includeScript value="https://code.jquery.com/jquery-1.9.1.min.js"/>
+    <apex:includeScript value="https://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"/>
+    
+    <!-- Salesforce1 -->
+    <apex:includeScript value="/canvas/sdk/js/publisher.js" />
+    
+    <script>  
+    function closeAction() {  Sfdc.canvas.publisher.publish({ name : "publisher.close", payload : { refresh:"true" }});          } 
+    </script>
+    
+    <script> 
+    (function(){try{var a=navigator.userAgent; 
+    if((a.indexOf('Salesforce')!=-1)&&(a.indexOf('iPhone')!=-1||a.indexOf('iPad')!=-1)&&(a.indexOf('OS/8')!=-1||a.indexOf('OS 8')!=-1)&&(a.indexOf('Safari')==-1)){ 
+    var s=document.createElement('style'); 
+    s.innerHTML="html,html body{overflow: auto;-webkit-overflow-scrolling:touch;}body{position:absolute;left:0;right:0;top:0;bottom:0;}"; 
+    document.getElementsByTagName('head')[0].appendChild(s);}}catch(e){}})(); 
+    </script> 
+
+<apex:form id="apexform"> 
+      <apex:outputPanel id="Reps" rendered="{!Lead.Existing_Account_Name__c!=null}">            
+           <apex:outputText value="Reps on the Lead Related Account:" style="font-weight:bold"/> <br/>
+           <apex:outputText > (C): {!Lead.Existing_Account_Name__r.Capital_Rep__r.Name} </apex:outputText>     <br/>
+           <apex:outputText > (D): {!Lead.Existing_Account_Name__r.Diagnostic_Rep__r.Name}</apex:outputText>     <br/>
+           <apex:outputText >  &nbsp;(I): {!Lead.Existing_Account_Name__r.Interventional_Rep__r.Name}</apex:outputText>     <br/> <br/>
+      </apex:outputPanel>  
+    
+      <apex:outputPanel id="PageMessages" rendered="true" >  
+      <apex:pageMessages showDetail="false"/>  
+      </apex:outputPanel>  
+      <br/>
+ 
+    <apex:outputPanel id="P2"  >
+        <apex:pageBlock id="P22" >
+           <apex:inputField value="{!Lead.OwnerId}" id="ownerField" style="width:device-width; height:100pt"  /> 
+           &nbsp;
+        </apex:pageBlock>
+    </apex:outputPanel>
+
+ <apex:commandButton value="Save Changes" action="{!UpdateLeadOwner}" reRender="P2, PageMessages"  />   
+ <button onclick="closeAction()">Close Action</button>    
+
+</apex:form> 
+</apex:page>

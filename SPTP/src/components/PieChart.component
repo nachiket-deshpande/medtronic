@@ -1,0 +1,30 @@
+<apex:component >
+    <apex:attribute name="data" description="Chart data" type="String" required="true" />
+    <apex:attribute name="title" description="Chart title" type="String" required="true" />
+    <apex:attribute name="height" description="Chart height" type="Integer" default="250" />
+    <apex:attribute name="width" description="Chart width" type="Integer" default="500" />
+    <apex:attribute name="legend" description="Position and type of legend" type="String" default="right" />
+    <apex:attribute name="backgroundColor" description="Chart background color" type="String" default="{stroke:'none', strokeSize: 0}" />
+    
+    <apex:outputPanel id="chart_div">   
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages: ["piechart" ]});
+            google.setOnLoadCallback(draw); 
+ 
+            function draw() {
+                var data = new google.visualization.DataTable( eval( '({!data})' ) );
+                var chart = new google.visualization.PieChart(document.getElementById('{!$Component.chart_div}'));
+                chart.draw(data,
+                    {width: {!width}, 
+                    height: {!height},
+                    legend: '{!legend}',
+                    smoothLine: true,
+                    title: '{!title}', 
+                    is3D: true,
+                    backgroundColor: {!backgroundColor}}
+                );
+            }
+        </script>
+    </apex:outputPanel>
+</apex:component>

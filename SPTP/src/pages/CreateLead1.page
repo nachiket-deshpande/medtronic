@@ -1,0 +1,95 @@
+<apex:page standardController="Contact" extensions="ContactLeadController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">    
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+
+<head>
+  <title>Salesforce Lightning Design System Trailhead Module</title>
+   <apex:stylesheet value="{!URLFOR($Resource.SLDS103, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>    
+
+<body>    
+
+  <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds"> 
+  
+
+
+    <!-- MASTHEAD 
+    <p class="slds-text-heading--label slds-m-bottom--small">
+      Salesforce Lightning Design System Trailhead Module
+    </p>
+    -->
+    <!-- / MASTHEAD -->    
+
+    <!-- PRIMARY CONTENT WRAPPER -->
+    <div class="myapp">    
+
+      <!-- SECTION - BADGE COMPONENTS -->
+      <section aria-labelledby="badges">
+       <!-- <h2 id="badges" class="slds-text-heading--large slds-m-vertical--large">Badges</h2>-->
+        <div>
+        <apex:form >
+                <apex:pageMessages ></apex:pageMessages>
+
+<div class="slds-form-element">
+                            <apex:outputlabel styleclass="slds-form-element__label" for="text-input-01" rendered="{!IF(accOptions.size > 1, true, false)}">Account Name:</apex:outputlabel>
+                            <div class="slds-form-element__control">
+                        <apex:selectList value="{!l.Existing_Account_Name__c}" multiselect="false" size="1" rendered="{!IF(accOptions.size > 1, true, false)}">
+                            <apex:selectOptions value="{!accOptions}"></apex:selectOptions>
+                        </apex:selectList>
+
+                            </div>
+                        </div>
+                <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">Product Portfolio:</label>
+                            <div class="slds-form-element__control">
+                                <apex:selectList value="{!selectedProdPortfolio }" multiselect="true" size="3">
+                            <apex:selectOptions value="{!prodPortfolioOptions}"></apex:selectOptions>
+                        </apex:selectList>
+                            </div>
+                        </div>
+                    <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">Sales Opportunity:</label>
+                            <div class="slds-form-element__control">
+                                <apex:selectList value="{!selectedSalesOpportunity }" multiselect="true" size="3">
+                                    <apex:selectOptions value="{!salesOpptyOptions}"></apex:selectOptions>
+                                </apex:selectList>
+                            </div>
+                        </div>
+                        
+                        
+                       
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">Description:</label>
+                            <div class="slds-form-element__control">
+                                <apex:inputField value="{!l.Description}" styleClass="slds-input"/>
+                            </div>
+                        </div>
+                        
+                        
+                    <apex:actionFunction action="{!onSave}" name="saveForm" />    
+            </apex:form>
+        </div>
+        <script src='/canvas/sdk/js/publisher.js'></script>
+        <script>
+        if(sforce.one) {                      
+            Sfdc.canvas.publisher.subscribe({name: "publisher.showPanel", onData:function(e) {
+                Sfdc.canvas.publisher.publish({name: "publisher.setValidForSubmit", payload: "true"});                                      
+            }});
+            Sfdc.canvas.publisher.subscribe({name: "publisher.post", onData:function(e) {
+                saveForm();
+                Sfdc.canvas.publisher.publish( { name: "publisher.close", payload:{refresh:"false"}});
+            }});           
+        }
+    </script>
+      </section>
+      <!-- / SECTION - BADGE COMPONENTS -->    
+
+    </div>
+    <!-- / PRIMARY CONTENT WRAPPER -->    
+
+  </div>
+  <!-- / REQUIRED SLDS WRAPPER -->    
+
+</body>
+</html>
+</apex:page>

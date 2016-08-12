@@ -1,0 +1,45 @@
+<apex:page standardController="REACH__c" 
+	extensions="ReachTopicEditorController" 
+	title="Topic Editor">
+	
+	<apex:form id="topicsForm">
+		<apex:sectionHeader title="REACH Topics Editor" subtitle=""/>
+        
+        <apex:pagemessages id="theMessages"/>  
+        
+        <apex:pageBlock title="REACH Topics Editor" id="actionPageBlock">
+			<apex:pageBlockButtons location="top">
+                <apex:commandbutton action="{!add}" value="Add Topic"/>
+                <apex:commandbutton action="{!save}" value="Save"/>
+                <apex:commandbutton action="{!cancel}" value="Cancel" onclick="if(!confirm('Are you sure?')){return false;}" />                       
+            </apex:pageBlockButtons>
+        	
+        	<apex:pageBlockSection id="editor" collapsible="false" columns="1">
+        		<apex:pageBlockTable id="BFTable2a" value="{!topics}" var="topic">
+        			<apex:column headerValue="{!$ObjectType.REACH_Topics__c.fields.Topic__c.label}">
+						<apex:inputField value="{!topic.Topic__c}" />
+					</apex:column>
+					<apex:column headerValue="{!$ObjectType.REACH_Topics__c.fields.Date_Topic_Discussed__c.label}">
+						<apex:inputField value="{!topic.Date_Topic_Discussed__c}" />
+					</apex:column>
+					<apex:column headerValue="{!$ObjectType.REACH_Topics__c.fields.Follow_Up_Notes__c.label}">
+						<apex:inputField value="{!topic.Follow_Up_Notes__c}" />
+					</apex:column>
+					<apex:column headerValue="{!$ObjectType.REACH_Topics__c.fields.Interested__c.label}">
+						<apex:inputField value="{!topic.Interested__c}" />
+					</apex:column>
+					<apex:column headerValue="{!$ObjectType.REACH_Topics__c.fields.To_Discuss__c.label}">
+						<apex:inputField value="{!topic.To_Discuss__c}" />
+					</apex:column>
+				</apex:pageBlockTable> 
+        	</apex:pageBlockSection>
+        	
+        	<apex:pageBlockButtons location="bottom"> 
+                <apex:commandbutton action="{!add}" value="Add Topic" rerender="editor" />
+                <apex:commandbutton action="{!save}" value="Save"/>
+                <apex:commandbutton action="{!cancel}" value="Cancel" onclick="if(!confirm('Are you sure?')){return false;}" />                       
+            </apex:pageBlockButtons>
+    	</apex:pageBlock>
+	</apex:form>
+	
+</apex:page>

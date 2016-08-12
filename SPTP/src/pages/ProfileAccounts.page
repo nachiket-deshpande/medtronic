@@ -1,0 +1,11 @@
+<apex:page controller="CommissionReportController" tabStyle="Commission__c" action="{!onListProfileAccounts}">
+	<apex:pageBlock title="Active Accounts [{!activeAccountCount}]">
+		<apex:pageBlockTable var="acct" value="{!activeAccounts}">
+			<apex:column headerValue="Name" value="{!acct.Name}"/>
+			<apex:column headerValue="Date Activated" value="{!acct.Date_Activated__c}"/>
+			<apex:column headerValue="Active">
+				<apex:outputField value="{!acct.Active__c}"/>
+			</apex:column>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:page>

@@ -1,0 +1,186 @@
+<apex:page controller="SalesRepLocatorController" cache="false" sidebar="false" showHeader="false" standardStylesheets="false">
+
+<style type="text/css">
+body {
+    font: 12px Arial, Helvetica, sans-serif;
+    color:#2d2d2d;
+}
+
+p { margin: 0.8em 0; line-height:18px; }
+
+h1, h2, h3, h4, h5 { margin: 0.4em 0; color:#2d2d2d; }
+h1 { font:34px/34px "Times New Roman", Times, serif; color:#00a0dc; }
+h2 { font-size: 22px; color:#003878; }
+h3 { font-size: 16px; }
+h4 { font-size: 14px; }
+h5 { font-size: 14px; }
+
+
+/* =Links
+-----------------------------------------------------------------------------*/
+a:link, a:visited, a:hover { color:#2d2d2d; text-decoration:underline; }
+
+
+/* =Forms
+-----------------------------------------------------------------------------*/
+form { padding: 0.4em; margin: 0; }
+form em { color: #FF0000; }
+form p { clear: left; margin: 0; padding: 0; padding-top: 0.4em; }
+.formfield {padding-top: 10px;}
+.formfield label {float: left;width: 100px;}
+.formfield input[type="text"] {width:300px;}
+
+.repsearchresults img {max-width:150px; padding-right:20px;}
+.repsearchresults table {padding:20px;}
+
+
+fieldset { margin: 0.8em 0; padding: 0.6em; border:1px solid #ccc; }
+fieldset legend { padding:0 5px; margin-bottom: 0.2em; font-weight: bold; color: #000000; font-size: 1.1em; }
+
+input.txt { 
+    min-width: 300px;
+    max-width: 100%;
+}
+
+textarea {
+    min-width: 300px;
+    height: 100px;
+}
+</style>
+
+    <apex:form >
+        <!-- <apex:panelGrid columns="5" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            <apex:outputText value="Zip Code"/>
+            <apex:inputText value="{!baseLocation}" size="10"/>
+            <apex:commandButton value="Search" action="{!onSearch}"/>
+        </apex:panelGrid> -->
+        
+        <apex:outputPanel id="topPanel">
+        <apex:outputPanel layout="black" style="color: red">
+            <apex:messages />
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" rendered="{!AND(searched,empty)}">
+            <span style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            Your search returned no results.
+            </span>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="searchPanel" layout="block" styleClass="repsearchresults" rendered="{!AND(searched,NOT(empty))}">
+            <apex:outputPanel layout="block">
+                <apex:outputPanel >
+                    <h4>Your message has been sent to:</h4>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <table width="460px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td>
+                        <apex:outputField value="{!resultRow.seller.Seller__r.Picture__c}" rendered="{! NOT( ISBLANK(resultRow.seller.Seller__r.Picture__c) ) }"/>
+                        <apex:image value="{!$Resource.Silhouette}" rendered="{! ISBLANK(resultRow.seller.Seller__r.Picture__c) }"/>
+                    </td>
+                    <td>
+                        <table width="400px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Sales Rep</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Seller__r.Name}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Email</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Email_Address__c}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Phone</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Seller_Phone__c}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <!-- <td>
+                        <table width="400px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Sales Rep Manager</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Sales_Manager__c}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Manager Email</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Sales_Manager_Email__c}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Manager Phone</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!resultRow.seller.Sales_Manager_Phone__c}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td> -->
+                </tr>
+            </table>   
+            <apex:outputPanel layout="block">
+                <apex:outputPanel >
+                    If your need is urgent or if you don't receive a reply in 1-2 business days, feel free to contact the representative directly.<br/><br/><br/>
+                    <h4>If you are unable to reach your representative</h4><br/>                
+                    Regional Manger <strong>{!resultRow.seller.Sales_Manager__c}</strong> and can be reached at <strong><a href="tel:{!resultRow.seller.Sales_Manager_Phone__c}" value="{!resultRow.seller.Sales_Manager_Phone__c}" target="_blank">{!resultRow.seller.Sales_Manager_Phone__c}</a></strong> or <strong><a href="mailto:{!resultRow.seller.Sales_Manager_Email__c}" target="_blank">{!resultRow.seller.Sales_Manager_Email__c}</a></strong>.
+                </apex:outputPanel>
+            </apex:outputPanel>      
+        </apex:outputPanel>
+        
+            <apex:outputPanel id="inputPanel" rendered="{!isInputStep}">
+                <apex:outputPanel styleClass="formtitle" layout="block" style="padding-top: 30px;">
+                    <label style="font-weight: bold; height: 30px; line-height: 30px;">Contact Your Sales Rep</label>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block">        
+                    <!-- <span style="color: rgb(255, 0, 0); font-weight: bold;">*</span> -->
+                    <label>Name&nbsp;<font color="red">*</font></label>
+                    <apex:inputText value="{!leadName}"/>       
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>Email&nbsp;<font color="red">*</font></label>
+                    <apex:inputField value="{!lead.Email}"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>Facility&nbsp;<font color="red">*</font></label>
+                    <apex:inputText value="{!lead.Company}" />
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>ZIP&nbsp;<font color="red">*</font></label>
+                    <apex:inputField value="{!lead.PostalCode}" />
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>Phone&nbsp;</label>
+                    <apex:inputField value="{!lead.MobilePhone}" />
+                </apex:outputPanel> 
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>Contact me regarding&nbsp;</label>
+                    <apex:inputField value="{!lead.Description}" />
+                </apex:outputPanel> 
+                <apex:outputPanel styleClass="formfield" layout="block">
+                    <label>My facility already uses Barrx™&nbsp;</label>
+                    <apex:inputField value="{!lead.Existing_Customer__c}" />
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="formfield" layout="block" style="padding-top: 10px;">
+                    <apex:commandButton value="Submit" action="{!onSubmit}" rerender="topPanel" style="margin-left: 8%;" />
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

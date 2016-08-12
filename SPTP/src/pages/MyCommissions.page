@@ -1,0 +1,30 @@
+<apex:page controller="CommissionReportController" action="{!onGenerate}" showHeader="false" sidebar="false" standardStylesheets="true">
+	<apex:dataTable width="100%" value="{!myCommissions.periods}" var="row" styleClass="list" columnClasses=",numericalColumn,numericalColumn,numericalColumn,numericalColumn" rowClasses="odd,even">
+		<apex:column headerValue="Month" value="{!row.name}"/>
+		<apex:column headerClass="CurrencyElement" headerValue="Standard">
+			<apex:outputText value="{0}" rendered="{!row.displayed}">
+				<apex:param value="{!row.standardAmount}"/>
+			</apex:outputText>
+			<apex:outputText rendered="{!not(row.displayed)}" value="-"/>
+		</apex:column>
+		<apex:column headerClass="CurrencyElement" headerValue="Bonus">
+			<apex:outputText value="{0}" rendered="{!row.displayed}">
+				<apex:param value="{!row.bonusAmount}"/>
+			</apex:outputText>
+			<apex:outputText rendered="{!not(row.displayed)}" value="-"/>
+		</apex:column>
+		<apex:column headerClass="CurrencyElement" headerValue="Catchup">
+			&nbsp;
+			<apex:outputText rendered="{!row.catchUp}" value="{0}" rendered="{!row.displayed}">
+				<apex:param value="{!row.catchUpAmount}"/>
+			</apex:outputText>
+			<apex:outputText rendered="{!not(row.displayed)}" value="-"/>
+		</apex:column>
+		<apex:column headerClass="CurrencyElement" headerValue="Total">
+			<apex:outputText value="{0}" rendered="{!row.displayed}">
+				<apex:param value="{!row.totalAmount}"/>
+			</apex:outputText>
+			<apex:outputText rendered="{!not(row.displayed)}" value="-"/>
+		</apex:column>
+	</apex:dataTable>
+</apex:page>

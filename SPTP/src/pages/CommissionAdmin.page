@@ -1,0 +1,32 @@
+<apex:page id="pg" showHeader="true" sidebar="true" controller="commissionAdminController" tabStyle="Commission__c" action="{!checkExisting}">
+  <script type="text/javascript">
+    function working() {
+      document.getElementById('working').style.display = 'block';
+      document.getElementById('pg:pb:pnl').style.display = 'none';
+    }
+  </script>
+  <apex:pageBlock id="pb" title="Commission Administration">
+    <apex:outputPanel id="pnl" layout="block" >
+      <apex:pageMessages />
+      <apex:outputPanel rendered="{!NOT(inProcess)}">
+        <apex:form >
+          Select Fiscal Year:&nbsp;&nbsp;
+          <apex:selectList value="{!fy}" size="1" title="Fiscal Year">
+            <apex:selectOptions value="{!fiscalYears}" />
+          </apex:selectList>
+          &nbsp;&nbsp;Delete and Recreate Commission Recrds:&nbsp;
+          <apex:inputCheckbox value="{!recreateCommRecords}" /><br/><br/>
+          <apex:commandButton action="{!recalcComm}" value="Recalculate" onclick="working()"/>
+
+        </apex:form>
+      </apex:outputPanel>
+    </apex:outputPanel>
+    <div id="working" style="display:none;">
+      <div style="text-align: center;">
+        <p>Hang tight!<br/> Processing Commission records for the selected Fiscal Year and initiating the batch <br/>
+           to re-process all Invoices for the selected Fiscal Year in order to recalculate commissions.</p>
+        <img src="/img/loading.gif" alt="Loading graphic" />
+      </div>
+    </div>  
+  </apex:pageBlock>
+</apex:page>

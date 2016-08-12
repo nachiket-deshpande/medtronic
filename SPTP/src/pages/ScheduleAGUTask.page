@@ -1,0 +1,32 @@
+<apex:page standardController="Contact" extensions="AGUTaskSelectionController">
+	<apex:sectionHeader title="Schedule AGU Task" subtitle="{!contact.Name}"/>
+	
+	<div class="bDescription" id="description">Enter due dates for the tasks below. Click <b>Create</b> button to generate tasks for yourself.</div>
+	
+	<apex:pageMessages />
+	
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Create" action="{!onCreate}"/>
+				<apex:commandButton value="Cancel" action="{!onCancel}"/>
+			</apex:pageBlockButtons>
+			
+			<apex:pageBlockTable value="{!selectedEvents}" var="row">
+				<apex:column headerValue="Event" value="{!row.Subject}"/>
+				<apex:column headerValue="Start Time">
+					<apex:inputField value="{!row.ActivityDateTime}"/>
+				</apex:column>
+				<apex:column headerValue="Duration">
+					<apex:selectList value="{!row.DurationInMinutes}" size="1">
+						<apex:selectOption itemValue="15" itemLabel="15 mins"/>
+						<apex:selectOption itemValue="30" itemLabel="30 mins"/>
+						<apex:selectOption itemValue="45" itemLabel="45 mins"/>
+						<apex:selectOption itemValue="60" itemLabel="60 mins"/>
+						<apex:selectOption itemValue="90" itemLabel="90 mins"/>
+					</apex:selectList>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

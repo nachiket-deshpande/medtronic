@@ -1,0 +1,5 @@
+<apex:page sidebar="false" showHeader="false"
+  standardController="Contact">
+  <c:ContactAccountRoles contactId1="{!Contact.Id}"  title="Account Roles"
+    showAccountRecordType="true" noRolesMessage="false"/>
+</apex:page>

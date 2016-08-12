@@ -1,0 +1,395 @@
+<apex:page standardController="Sales_Plan__c" tabStyle="Sales_Plan__c" extensions="salesPlanExtension">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script>
+function myFunction(divId) { 
+    window.frames["print_frame"].document.body.innerHTML=document.getElementById(divId).innerHTML; 
+    window.frames["print_frame"].window.focus(); 
+    window.frames["print_frame"].window.print(); 
+}
+</script>
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+ 
+  <style type="text/css">
+    .pbTitle {white-space: nowrap}
+    .expanded{background: transparent url('/img/alohaSkin/twisty_sprite.png') 0 -11px no-repeat;cursor: pointer;
+              margin-right: 4px;background-repeatpno-repeat;height: 11px;width: 11px;}
+    .collapsed{background: transparent url('/img/alohaSkin/twisty_sprite.png') 0 0 no-repeat;cursor: pointer;
+              margin-right: 4px;background-repeat: no-repeat;height: 11px;width: 11px;}
+  </style>
+  <apex:form >
+  <div align="right"><button onclick="myFunction('{!$Component.spanel}')" >Print</button></div>
+  <apex:outputPanel id="spanel">
+    <apex:pageBlock title="{!pageTitle}" id="pgblk">
+      <apex:outputField value="{!Sales_Plan__c.Name}" rendered="false"></apex:outputField> <!-- do not remove --> 
+      <apex:outputField value="{!Sales_Plan__c.Account__r.Name}" rendered="false"></apex:outputField> <!-- do not remove -->
+      <apex:outputField value="{!Sales_Plan__c.FQ_Start_Date__c}" rendered="false"></apex:outputField> <!-- do not remove --> 
+      <apex:outputField value="{!Sales_Plan__c.FQ_End_Date__c}" rendered="false"></apex:outputField> <!-- do not remove --> 
+      <table width="100%">
+        <tr>
+          <td align="right" width="16%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Account__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="16%">
+            <apex:outputField value="{!Sales_Plan__c.Account__c}"/>
+          </td>
+          <td align="right" width="16%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Account_Number__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="16%">
+            <apex:outputField value="{!Sales_Plan__c.Account_Number__c}"/>
+          </td>
+          
+          <td align="right" width="16%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Total_CQ_Target_Revenue__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="16%">
+            <apex:outputField value="{!Sales_Plan__c.Total_CQ_Target_Revenue__c}"/>
+          </td>
+        </tr>
+      </table>
+    </apex:pageBlock>
+    <apex:pageBlock title="Target Growth">
+            
+         <table width="100%">
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.PillCam_Disposable_Base__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+           <apex:outputField value="{!Sales_Plan__c.PillCam_Disposable_Base__c}"/>
+          </td>
+          <td align="right" width="14%">
+           <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.PillCam_CQ_Growth_Goal__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+           </td>
+           <td align="left" width="10%">
+           <apex:outputField value="{!Sales_Plan__c.PillCam_CQ_Growth_Goal__c}"/>
+          </td>
+          <td align="right" width="14%">
+           <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.PillCam_Total_CQ_Target__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+           <apex:outputField value="{!Sales_Plan__c.PillCam_Total_CQ_Target__c}"/>
+          </td>
+          <td align="right" width="14%">
+           <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Pillcam_Disposable_QTD_Actual__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+           <apex:outputField value="{!Sales_Plan__c.Pillcam_Disposable_QTD_Actual__c}"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.SmartPill_Disposable_Base__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.SmartPill_Disposable_Base__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.SmartPill_CQ_Growth_Goal__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.SmartPill_CQ_Growth_Goal__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.SmartPill_Total_CQ_Target__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.SmartPill_Total_CQ_Target__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Smartpill_Disposable_QTD_Actual__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Smartpill_Disposable_QTD_Actual__c}"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Barrx_Disposable_Base__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;           
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Barrx_Disposable_Base__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Barrx_CQ_Growth_Goal__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Barrx_CQ_Growth_Goal__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Barrx_Total_CQ_Target__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Barrx_Total_CQ_Target__c}"/>  
+          </td>
+           <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Barrx_Disposable_QTD_Actual__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Barrx_Disposable_QTD_Actual__c}"/>  
+          </td>
+        
+        </tr>
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Reflux_Disposable_Base__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Reflux_Disposable_Base__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Reflux_CQ_Growth_Goal__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Reflux_CQ_Growth_Goal__c}"/>           
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Reflux_Total_CQ_Target__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Reflux_Total_CQ_Target__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Reflux_Disposable_QTD_Actual__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Reflux_Disposable_QTD_Actual__c}"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Beacon_Base__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Beacon_Base__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Beacon_CQ_Growth_Goal__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Beacon_CQ_Growth_Goal__c}"/>         
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Beacon_Total_CQ_Target__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Beacon_Total_CQ_Target__c}"/>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="{!$ObjectType.Sales_Plan__c.fields.Beacon_Base_QTD_Actual__c.Label}" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+            <apex:outputField value="{!Sales_Plan__c.Beacon_Base_QTD_Actual__c}"/>
+          </td>
+        </tr>
+      </table>
+     <apex:pageBlockButtons location="Top">
+        <apex:commandButton id="savebtn" action="{!save}" value="Update Plan" style="display:none;"/>
+        <apex:commandButton id="editbtn" action="{!URLFOR($Action.Sales_Plan__c.Edit, Sales_Plan__C.Id, [retURL='/' & Sales_Plan__c.Id],true)}" value="Edit Plan"/>
+      </apex:pageBlockButtons>
+      <apex:inlineEditSupport event="ondblClick" showOnEdit="savebtn" hideOnEdit="editbtn" />
+    </apex:pageBlock>
+    <apex:pageBlock title="Physician Sales Goals" id="popnl">
+      <div id="potbl">
+        <apex:pageBlockButtons location="Top" >
+          <apex:commandButton value="Add New Physician Sales Goal" action="{!addObjective}"  /> 
+          <apex:commandButton value="Add New Physician" action="{!addContact}"  /> 
+          <apex:outputLink value="/servlet/servlet.FileDownload?file=01540000002GIBo" target="_new">PIPE Stage Overview</apex:outputLink> 
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="PillCam Unit Growth Physician Sales Goals" columns="1" rendered="{!pillCamObjectives.size>0}">
+          <apex:pageBlockTable value="{!pillCamObjectives}" var="pco">
+            <apex:column >
+              <apex:facet name="header">Edit</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.Edit, pco.Id, [retURL='/' & Sales_Plan__c.Id])}">Edit
+              </apex:outputLink>
+            </apex:column>
+            <apex:column >
+              <apex:facet name="header">View</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.View, pco.Id, [retURL='/' & Sales_Plan__c.Id])}">View
+              </apex:outputLink>
+            </apex:column>
+            
+            <apex:column value="{!pco.Physician__c}"/>
+            <apex:column value="{!pco.Role__c}"/>
+            <apex:column value="{!pco.Target_Type__c}"/>
+            <apex:column value="{!pco.Objective__c}"/>
+            <apex:column value="{!pco.Next_Steps__c}"/>
+            <apex:column value="{!pco.Stage__c}"/>
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="SmartPill Unit Growth Physician Sales Goals" columns="1" rendered="{!smartPillObjectives.size>0}">
+          <apex:pageBlockTable value="{!smartPillObjectives}" var="spo">
+            <apex:column >
+              <apex:facet name="header">Edit</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.Edit, spo.Id, [retURL='/' & Sales_Plan__c.Id])}">Edit
+              </apex:outputLink>
+            </apex:column>
+            <apex:column >
+
+             <apex:facet name="header">View</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.View, spo.Id, [retURL='/' & Sales_Plan__c.Id])}">View
+              </apex:outputLink>
+            </apex:column>
+            
+            <apex:column value="{!spo.Physician__c}"/>
+            <apex:column value="{!spo.Role__c}"/>
+            <apex:column value="{!spo.Target_Type__c}"/>
+            <apex:column value="{!spo.Objective__c}"/>
+            <apex:column value="{!spo.Next_Steps__c}"/>
+            <apex:column value="{!spo.Stage__c}"/>
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Barrx Unit Growth Physician Sales Goals" columns="1" rendered="{!RFAObjectives.size>0}">
+          <apex:pageBlockTable value="{!RFAObjectives}" var="rfao">
+            <apex:column >
+              <apex:facet name="header">Edit</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.Edit, rfao.Id, [retURL='/' & Sales_Plan__c.Id])}">Edit
+              </apex:outputLink>
+            </apex:column>
+             <apex:column >
+
+             <apex:facet name="header">View</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.View, rfao.Id, [retURL='/' & Sales_Plan__c.Id])}">View
+              </apex:outputLink>
+            </apex:column>
+           
+            
+            <apex:column value="{!rfao.Physician__c}"/>
+            <apex:column value="{!rfao.Role__c}"/>
+            <apex:column value="{!rfao.Target_Type__c}"/>
+            <apex:column value="{!rfao.Objective__c}"/>
+            <apex:column value="{!rfao.Next_Steps__c}"/>
+            <apex:column value="{!rfao.Stage__c}"/>
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Reflux Unit Growth Physician Sales Goals" columns="1" rendered="{!refluxObjectives.size>0}">
+          <apex:pageBlockTable value="{!refluxObjectives}" var="ro">
+            <apex:column >
+              <apex:facet name="header">Edit</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.Edit, ro.Id, [retURL='/' & Sales_Plan__c.Id])}">Edit
+              </apex:outputLink>
+            </apex:column>
+             <apex:column >
+              <apex:facet name="header">View</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.View, ro.Id, [retURL='/' & Sales_Plan__c.Id])}">View
+              </apex:outputLink>
+            </apex:column>
+           
+            <apex:column value="{!ro.Physician__c}"/>
+            <apex:column value="{!ro.Role__c}"/>
+            <apex:column value="{!ro.Target_Type__c}"/>
+            <apex:column value="{!ro.Objective__c}"/>
+            <apex:column value="{!ro.Next_Steps__c}"/>
+            <apex:column value="{!ro.Stage__c}"/>
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Beacon Unit Growth Physician Sales Goals" columns="1" rendered="{!beaconObjectives.size>0}">
+          <apex:pageBlockTable value="{!beaconObjectives}" var="bo">
+            <apex:column >
+              <apex:facet name="header">Edit</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.Edit, bo.Id, [retURL='/' & Sales_Plan__c.Id])}">Edit
+              </apex:outputLink>
+            </apex:column>
+            <apex:column >
+              <apex:facet name="header">View</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Physician_Sales_Goal__c.View, bo.Id, [retURL='/' & Sales_Plan__c.Id])}">View
+              </apex:outputLink>
+            </apex:column>
+           
+            <apex:column value="{!bo.Physician__c}"/>
+            <apex:column value="{!bo.Role__c}"/>
+            <apex:column value="{!bo.Target_Type__c}"/>
+            <apex:column value="{!bo.Objective__c}"/>
+            <apex:column value="{!bo.Next_Steps__c}"/>
+            <apex:column value="{!bo.Stage__c}"/>
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+      </div>
+    </apex:pageBlock>
+    <apex:pageBlock title="Opportunities" id="opppnl">
+        <apex:pageBlockButtons location="Top" >
+          <apex:commandButton value="Add New Opportunity" action="{!addOpportunity}"  /> 
+        </apex:pageBlockButtons>
+      <!--<apex:pageBlockTable value="{!opps}" var="o" rendered="{!opps.size>0}">
+        <apex:column >
+          <apex:facet name="header">Opportunity Name</apex:facet>
+          <apex:outputLink value="{!URLFOR($Action.Opportunity.View, o.Id, [retURL='/' & Sales_Plan__c.Id])}">{!o.Name}</apex:outputLink>
+        </apex:column>    
+        <apex:column value="{!o.RecordTypeId}"/>    
+        <apex:column value="{!o.Amount}"/>    
+        <apex:column value="{!o.StageName}"/>    
+        <apex:column value="{!o.CloseDate}"/>    
+      </apex:pageBlockTable>-->
+      <apex:repeat value="{!mapOwnerOpps}" var="owner">
+        <apex:pageBlockSection title="Owner Name: {!owner}" collapsible="true" columns="1">
+        <apex:pageBlockTable value="{!mapOwnerOpps[owner]}" var="o">
+          <apex:column >
+              <apex:facet name="header">Opportunity Name</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Opportunity.View, o.Id)}">{!o.Name}</apex:outputLink>
+          </apex:column>  
+           
+          <apex:column value="{!o.RecordTypeId}"/>    
+          <apex:column value="{!o.Amount}"/>    
+          <apex:column value="{!o.StageName}"/>
+           <apex:column value="{!o.CloseDate}"/>   
+          
+        </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <br/><br/>
+    </apex:repeat>
+    </apex:pageBlock>
+    <apex:pageBlock title="Events" id="apnl">
+      <apex:pageBlockButtons location="Top" >
+        <apex:CommandButton value="Add New Event" action="{!addEvent}"/>
+      </apex:pageBlockButtons>
+      <apex:pageBlockTable value="{!activities}" var="a" rendered="{!activities.size>0}">
+        <apex:column >
+          <apex:facet name="header">Subject</apex:facet>
+          <apex:outputLink value="{!URLFOR($Action.Event.View, a.Id, [retURL='/' & Sales_Plan__c.Id])}">{!a.Subject}</apex:outputLink>
+        </apex:column>
+            
+        <apex:column value="{!a.Type}"/>    
+        <apex:column value="{!a.OwnerId}"/>    
+        <apex:column value="{!a.ActivityDate}"/>    
+        <apex:column >
+            <apex:facet name="header">Event Objective</apex:facet>
+         <apex:outputfield value="{!a.Call_Objective__c}"/>    
+         </apex:column>
+        <apex:column value="{!a.Next_Steps__c}"/>        
+      </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:outputPanel>
+  </apex:form>
+  <script>
+    /* add button */
+    $("[id$='popnl'] .mainTitle").prepend("<img src='/s.gif' class='expanded' id='poimg'/>");
+    $("[id$='opppnl'] .mainTitle").prepend("<img src='/s.gif' class='expanded' id='oimg'/>");
+    $("[id$='apnl'] .mainTitle").prepend("<img src='/s.gif' class='expanded' id='aimg'/>");
+
+    /* add on click handlers */
+    $("#poimg").click(function(){
+      if ($(this).hasClass("expanded")) {
+        $("[id$='popnl'] .pbBody").hide();
+      } else {
+        $("[id$='popnl'] .pbBody").show();
+      }
+      $("#poimg").toggleClass("collapsed expanded");  
+    });
+    $("#oimg").click(function(){
+      if ($(this).hasClass("expanded")) {
+        $("[id$='opppnl'] .pbBody").hide();
+      } else {
+        $("[id$='opppnl'] .pbBody").show();
+      }
+      $("#oimg").toggleClass("collapsed expanded");  
+    });
+    $("#aimg").click(function(){
+      if ($(this).hasClass("expanded")) {
+        $("[id$='apnl'] .pbBody").hide();
+      } else {
+        $("[id$='apnl'] .pbBody").show();
+      }
+      $("#aimg").toggleClass("collapsed expanded");  
+    });
+  </script>
+</apex:page>

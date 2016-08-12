@@ -1,0 +1,49 @@
+<apex:component controller="OppAccountRolesCompController">
+  <apex:attribute name="contactId1" type="Id" assignTo="{!contactId}"
+    required="true"
+    description="Contact ID for whom Account roles should be shown" />
+
+  <apex:attribute name="showAccountRecordType" type="boolean"
+    default="true"
+    description="Decides whether record type column of Account sobject should be shown" />
+
+  <apex:attribute name="title" type="String"
+    description="Title to be shown for the grid" />
+
+  <apex:attribute name="noRolesMessage" type="boolean" default="false"
+    description="Pass true, if you want to show a message in case the contact is not part of any roles" />
+
+
+  <apex:pageBlock title="{!IF(ISBLANK(title), '', title)}">
+    <apex:pageBlockTable value="{!accountRoles}" var="role">
+      <apex:column headerValue="{!$ObjectType.Account.fields.Name.Label}">
+        <apex:outputLink value="{!URLFOR($Action.Account.View, role.AccountId, [retURL=URLFOR($Action.Contact.View, $CurrentPage.parameters.Id)])}"
+          target="_top">
+          {!role.Account.Name}
+        </apex:outputLink>
+      </apex:column>
+
+      <apex:column headerValue="Account Type"
+        value="{!role.Account.RecordType.Name}"
+        rendered="{!showAccountRecordType}" />
+
+      <apex:column headerValue="{!$ObjectType.AccountContactRole.fields.Role.Label}"
+        value="{!role.Role}" />
+
+      <apex:column headerValue="{!$ObjectType.AccountContactRole.fields.IsPrimary.Label}">
+
+        <apex:image value="/img/checkbox_checked.gif" alt="Checked"
+          width="21" height="16" styleClass="checkImg" title="Checked"
+          rendered="{!role.isPrimary}" />
+
+        <apex:image value="/img/checkbox_unchecked.gif" alt="Not Checked"
+          width="21" height="16" styleClass="checkImg" title="Not Checked"
+          rendered="{!NOT(role.isPrimary)}" />
+
+      </apex:column>
+    </apex:pageBlockTable>
+    <apex:pageMessage summary="No associations with Accounts in any role"
+      severity="warning" strength="3"
+      rendered="{!AND (noRolesMessage, accountRoles.size == 0)}" />
+  </apex:pageBlock>
+</apex:component>

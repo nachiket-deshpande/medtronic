@@ -1,0 +1,25 @@
+<apex:page standardController="Contact" extensions="AGUTaskSelectionController" action="{!onLoad}">
+	<apex:sectionHeader title="Select AGU Task" subtitle="{!contact.Name}"/>
+	
+	<div class="bDescription" id="description">Select up to 3 tasks you'd like to work on next from 
+	the list below. Click <b>Schedule</b> button to schedule selected tasks.</div>
+	
+	<apex:pageMessages />
+	
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Schedule" action="{!onSchedule}"/>
+				<apex:commandButton value="Cancel" action="{!onCancel}"/>
+			</apex:pageBlockButtons>
+			
+			<apex:pageBlockTable value="{!events}" var="row">
+				<apex:column >
+					<apex:inputCheckbox value="{!row.selected}"/>
+				</apex:column>
+				<apex:column headerValue="Task" value="{!row.event.Subject}"/>
+				<apex:column headerValue="Category" value="{!row.category}"/>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

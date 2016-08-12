@@ -1,0 +1,661 @@
+<apex:page controller="TerritoryPlanCtrl" >
+    <script>
+function myFunction(divId) { 
+    window.frames["print_frame"].document.body.innerHTML=document.getElementById(divId).innerHTML; 
+    window.frames["print_frame"].window.focus(); 
+    window.frames["print_frame"].window.print(); 
+}
+
+
+</script>
+
+<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+    
+    <apex:form id="theForm">
+    
+    <apex:actionFunction name="loadSalesPlan" action="{!onLoad}" reRender="viewSalesBlock,eventblk,opppnl" status="counterStatus"/>
+    <apex:actionFunction name="resetSalesPlan" action="{!resetSalesPlan}" reRender="viewSalesBlock,eventblk,opppnl" status="counterStatus"/>
+    <apex:actionFunction name="loadIntervention" action="{!showAllIntervention}" reRender="intervpanel" status="counterStatus"/>
+    <apex:actionFunction name="resetIntervList" action="{!resetInterventionList}" reRender="intervpanel" status="counterStatus"/>
+    <apex:actionFunction name="loadDiagnostic" action="{!showAllDiagnostic}" reRender="diagpanel" status="counterStatus"/>
+    <apex:actionFunction name="resetDiagList" action="{!resetDiagnosticList}" reRender="diagpanel" status="counterStatus"/>
+    
+    <apex:actionstatus id="counterStatus">
+        <apex:facet name="start">
+            <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.65;width:100%;">
+                <div class="waitingHolder" style="top: 100px; width: 91px;">
+                <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                <span class="waitingDescription">Loading...</span>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionstatus>
+    
+    <apex:tabPanel switchType="client" selectedTab="name3" id="theTabPanel" >
+            <apex:tab label="View Sales Plan Rollup" name="name3" id="tabThree" ontableave="resetSalesPlan();" ontabenter="loadSalesPlan();">
+            <div align="right"><button onclick="myFunction('{!$Component.viewSalesBlock}')" >Print</button></div>
+        <apex:pageBlock id="viewSalesBlock">
+            <apex:pageBlockSection title="Filters">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Territory"></apex:outputLabel>
+                    <apex:selectList value="{!selectedTerri}" size="1">
+                        <apex:selectOptions value="{!territoryptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!onSelectTerritory}" event="onchange" reRender="viewSalesBlock"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Account"></apex:outputLabel>
+                    <apex:selectList value="{!selectedAcc}" size="1">
+                        <apex:selectOptions value="{!accOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!onSelectAccount}" event="onchange" reRender="viewSalesBlock,opppnl,eventblk"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Rep"></apex:outputLabel>
+                    <apex:selectList value="{!selectedRep}" size="1">
+                        <apex:selectOptions value="{!repOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!onSelectRep}" event="onchange" reRender="viewSalesBlock,opppnl,eventblk"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Physician"></apex:outputLabel>
+                    <apex:selectList value="{!selectedPhy}" size="1">
+                        <apex:selectOptions value="{!phyOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!onSelectPhysician}" event="onchange" reRender="viewSalesBlock"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <!--
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Target"></apex:outputLabel>
+                    <apex:selectList value="{!selectedTrgt}" size="1">
+                        <apex:selectOptions value="{!trgtOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!applyTrgtFilter}" event="onchange" reRender="viewSalesBlock"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                -->
+            </apex:pageBlockSection>
+         
+         <apex:pageBlockSection title="Target Growth"/>
+            <table width="100%">
+        <tr>
+          <td align="right" width="14%">
+            <apex:outputLabel value="PillCam Disp. Base" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!pillDispTotal}" />
+               </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="PillCam CQ Growth" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!pillCamTotal}" />
+               </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="PillCam CQ Target" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!pillCamGrandTotal}" />
+              </apex:outputText>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="PillCam QTD Actual" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!pillDispQTD}" />
+              </apex:outputText>
+          </td>
+
+         </tr>  
+        
+        <tr>
+          <td align="right" width="14%">
+           <apex:outputLabel value="SmartPill Disp. Base" style="font-weight:bold"/>&nbsp;&nbsp;
+           </td>
+           <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!smartDispTotal}" />
+               </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+           <apex:outputLabel value="SmartPill CQ Growth" style="font-weight:bold"/>&nbsp;&nbsp;
+           </td>
+           <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!smartPillTotal}" />
+               </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+           <apex:outputLabel value="SmartPill CQ Target" style="font-weight:bold"/>&nbsp;&nbsp;
+           </td>
+           <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!smartPillGrandTotal}" />
+               </apex:outputText>
+          </td>
+          <td align="right" width="14%">
+           <apex:outputLabel value="SmartPill QTD Actual" style="font-weight:bold"/>&nbsp;&nbsp;
+           </td>
+           <td align="left" width="10%">
+               <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!smartDISCQTD}" />
+               </apex:outputText>
+          </td>
+       </tr>
+       
+        <tr>
+          <td align="right" width="14%">
+           <apex:outputLabel value="Barrx Disp. Base" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!barrxDispTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+           <apex:outputLabel value="Barrx CQ Growth" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!barrxTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+           <apex:outputLabel value="Barrx CQ Target" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!barrxGrandTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+           <apex:outputLabel value="Barrx QTD Actual" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!barrxQTD}" />
+              </apex:outputText>
+          </td>
+       
+        </tr>
+        
+       <tr>   
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Reflux Disp. Base" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!refluxDispTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Reflux CQ Growth" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!refluxTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Reflux CQ Target" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!refluxGrandTotal}" />
+              </apex:outputText>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="Reflux QTD Actual" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!refluxQTD}" />
+              </apex:outputText>
+          </td>
+          
+       </tr>
+       
+       <tr>   
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Beacon Disp. Base" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!beaconDispTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Beacon CQ Growth" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!beaconTotal}" />
+              </apex:outputText>
+          </td>
+          
+          <td align="right" width="14%">
+            <apex:outputLabel value="Beacon CQ Target" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!beaconGrandTotal}" />
+              </apex:outputText>
+          </td>
+          <td align="right" width="14%">
+            <apex:outputLabel value="Beacon QTD Actual" style="font-weight:bold"/>&nbsp;&nbsp;
+          </td>
+          <td align="left" width="10%">
+              <apex:outputText value="{0, number, currency}">
+                   <apex:param value="{!beaconQTD}" />
+              </apex:outputText>  
+          </td>
+          
+       </tr>
+        
+      </table>
+      
+      
+            <apex:pageBlockSection title="PillCam Unit Growth Physician Objectives" columns="1" rendered="{!pillCamObjectives.size>0}">
+            <!----rendered="{!pillCamObjectives.size>0}"--->
+      <apex:pageBlockTable value="{!pillCamObjectives}" var="pco">
+        
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Account Name {!IF(sortFieldPO = 'Business_Plan__r.Account__r.Name', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Business_Plan__r.Account__r.Name"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputLink value="/{!pco.Business_Plan__c}">{!pco.Business_Plan__r.Account__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!pco.Physician__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Role {!IF(sortFieldPO = 'Role__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Role__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!pco.Role__c}"></apex:outputText>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Target Type {!IF(sortFieldPO = 'Target_Type__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Target_Type__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!pco.Target_Type__c}"></apex:outputText>
+        </apex:column>
+        <apex:column value="{!pco.Objective__c}"/>
+        <apex:column value="{!pco.Next_Steps__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldPO = 'Stage__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Stage__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!pco.Stage__c}"></apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="SmartPill Unit Growth Physician Objectives" columns="1" rendered="{!smartPillObjectives.size>0}">
+      <apex:pageBlockTable value="{!smartPillObjectives}" var="spo">
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Account Name {!IF(sortFieldPO = 'Business_Plan__r.Account__r.Name', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Business_Plan__r.Account__r.Name"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputLink value="/{!spo.Business_Plan__c}">{!spo.Business_Plan__r.Account__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!spo.Physician__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Role {!IF(sortFieldPO = 'Role__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Role__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!spo.Role__c}"></apex:outputText>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Target Type {!IF(sortFieldPO = 'Target_Type__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Target_Type__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!spo.Target_Type__c}"></apex:outputText>
+        </apex:column>
+        <apex:column value="{!spo.Objective__c}"/>
+        <apex:column value="{!spo.Next_Steps__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldPO = 'Stage__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Stage__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!spo.Stage__c}"></apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Barrx Unit Growth Physician Objectives" columns="1" rendered="{!RFAObjectives.size>0}">
+      <apex:pageBlockTable value="{!RFAObjectives}" var="rfao">
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Account Name {!IF(sortFieldPO = 'Business_Plan__r.Account__r.Name', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Business_Plan__r.Account__r.Name"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputLink value="/{!rfao.Business_Plan__c}">{!rfao.Business_Plan__r.Account__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!rfao.Physician__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Role {!IF(sortFieldPO = 'Role__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Role__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!rfao.Role__c}"></apex:outputText>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Target Type {!IF(sortFieldPO = 'Target_Type__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Target_Type__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!rfao.Target_Type__c}"></apex:outputText>
+        </apex:column>
+        <apex:column value="{!rfao.Objective__c}"/>
+        <apex:column value="{!rfao.Next_Steps__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldPO = 'Stage__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Stage__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!rfao.Stage__c}"></apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Reflux Unit Growth Physician Objectives" columns="1" rendered="{!refluxObjectives.size>0}">
+      <apex:pageBlockTable value="{!refluxObjectives}" var="ro">
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Account Name {!IF(sortFieldPO = 'Business_Plan__r.Account__r.Name', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Business_Plan__r.Account__r.Name"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputLink value="/{!ro.Business_Plan__c}">{!ro.Business_Plan__r.Account__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!ro.Physician__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Role {!IF(sortFieldPO = 'Role__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Role__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!ro.Role__c}"></apex:outputText>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Target Type {!IF(sortFieldPO = 'Target_Type__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Target_Type__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!ro.Target_Type__c}"></apex:outputText>
+        </apex:column>
+        <apex:column value="{!ro.Objective__c}"/>
+        <apex:column value="{!ro.Next_Steps__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldPO = 'Stage__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Stage__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!ro.Stage__c}"></apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Beacon Unit Growth Physician Objectives" columns="1" rendered="{!beaconObjectives.size>0}">
+      <apex:pageBlockTable value="{!beaconObjectives}" var="bo">
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Account Name {!IF(sortFieldPO = 'Business_Plan__r.Account__r.Name', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Business_Plan__r.Account__r.Name"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputLink value="/{!bo.Business_Plan__c}">{!bo.Business_Plan__r.Account__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!bo.Physician__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Role {!IF(sortFieldPO = 'Role__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Role__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!bo.Role__c}"></apex:outputText>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Target Type {!IF(sortFieldPO = 'Target_Type__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Target_Type__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!bo.Target_Type__c}"></apex:outputText>
+        </apex:column>
+        <apex:column value="{!bo.Objective__c}"/>
+        <apex:column value="{!bo.Next_Steps__c}"/>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldPO = 'Stage__c', IF(sortOrderPO = 'DESC','▼','▲'), '')}" action="{!applySortingOnPO}" reRender="theForm">
+                    <apex:param name="sortby" value="Stage__c"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!bo.Stage__c}"></apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Opportunities" id="opppnl">
+        <apex:commandLink value="{!oppTitle}" action="{!applyOppFilter}" reRender="opppnl"/> <br/><br/>
+    
+    <apex:repeat value="{!mapOwnerOpps}" var="owner">
+        <apex:pageBlockSection title="Owner Name: {!owner}" collapsible="true" columns="1">
+        <apex:pageBlockTable value="{!mapOwnerOpps[owner]}" var="o">
+          <apex:column >
+              <apex:facet name="header">Opportunity Name</apex:facet>
+              <apex:outputLink value="{!URLFOR($Action.Opportunity.View, o.Id)}">{!o.Name}</apex:outputLink>
+          </apex:column>  
+          <apex:column value="{!o.AccountId}"/>  
+          <apex:column value="{!o.RecordTypeId}"/>    
+          <apex:column value="{!o.Amount}"/>    
+          <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Stage {!IF(sortFieldOPP = 'StageName', IF(sortOrderOPP = 'DESC','▼','▲'), '')}" action="{!applySortingOnOPP}" reRender="theForm">
+                    <apex:param name="sortby" value="StageName"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!o.StageName}"></apex:outputText>
+          </apex:column> 
+          <apex:column >
+            <apex:facet name="header">
+                <apex:commandLink value="Close Date {!IF(sortFieldOPP = 'CloseDate', IF(sortOrderOPP = 'DESC','▼','▲'), '')}" action="{!applySortingOnOPP}" reRender="theForm">
+                    <apex:param name="sortby" value="CloseDate"/>
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{0, date, MM'/'dd'/'yyyy}">
+              <apex:param value="{!o.CloseDate}" />
+            </apex:outputText>
+          </apex:column> 
+        </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <br/><br/>
+    </apex:repeat>
+  </apex:pageBlock>
+  
+  <apex:pageBlock title="Events" id="eventblk">
+      <apex:pageBlockSection >
+          <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Select Filter"></apex:outputLabel>
+            <apex:selectList value="{!selectedEvntFilter}" size="1">
+                <apex:selectOptions value="{!evntOptions}"></apex:selectOptions>
+                <apex:actionSupport action="{!applyEventFilter}" event="onchange" reRender="theForm"/>
+            </apex:selectList>
+          </apex:pageBlockSectionItem>
+      </apex:pageBlockSection> <br/>
+      <apex:pageBlockTable value="{!activities}" var="a" rendered="{!activities.size>0}">
+        <apex:column >    
+        <apex:facet name="header">Subject</apex:facet>
+        <apex:outputLink value="/{!a.Id}">{!a.Subject}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!a.OwnerId}"/>    
+        <apex:column value="{!a.ActivityDate}"/>    
+        <apex:column >
+            <apex:facet name="header">Event Objective</apex:facet>
+            <apex:outputfield value="{!a.Call_Objective__c}"/>    
+         </apex:column> 
+        <apex:column value="{!a.Next_Steps__c}"/>        
+      </apex:pageBlockTable>
+  </apex:pageBlock>
+  </apex:tab>
+         <apex:tab label="Interventional Territory Summary" name="name1" id="tabOne" ontabenter="loadIntervention();" ontableave="resetIntervList();">
+         
+         <div align="right"><button onclick="myFunction('{!$Component.intervpanel}')">Print</button></div>
+         <apex:pageBlock id="intervpanel">
+             <apex:pageBlockSection title="Filters">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Territory"></apex:outputLabel>
+                    <apex:selectList value="{!selectedTerriInterv}" size="1">
+                        <apex:selectOptions value="{!territoryptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!filterIntervByTerritory}" event="onchange" reRender="intervpanel"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Rep"></apex:outputLabel>
+                    <apex:selectList value="{!selectedRepInterv}" size="1">
+                        <apex:selectOptions value="{!repOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!filterIntervByRep}" event="onchange" reRender="theForm"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+             
+             <apex:pageBlockSection title="Barrx Unit Sales Plan" columns="1">
+             <apex:pageBlockTable value="{!barrxalesPlanList}" var="s">
+                 
+                     <apex:column headerValue="Account Name">
+                         <apex:outputLink value="/{!s.id}"> {!s.Account_Name__c} </apex:outputLink>
+                     </apex:column>
+                     <apex:column value="{!s.Barrx_Disposable_Base__c}"/>
+                     <apex:column value="{!s.Barrx_CQ_Growth_Goal__c}"/>
+                     <apex:column value="{!s.Barrx_Total_CQ_Target__c}"/>
+                     <apex:column value="{!s.Barrx_Disposable_QTD_Actual__c}"/>
+             </apex:pageBlockTable>
+             </apex:pageBlockSection>
+             <apex:pageBlockSection title="Reflux Unit Sales Plan" columns="1">
+             <apex:pageBlockTable value="{!RefluxsalesPlanList}" var="s">
+                 
+                     <apex:column headerValue="Account Name">
+                         <apex:outputLink value="/{!s.id}"> {!s.Account_Name__c} </apex:outputLink>
+                     </apex:column>
+                     <apex:column value="{!s.Reflux_Disposable_Base__c}"/>
+                     <apex:column value="{!s.Reflux_CQ_Growth_Goal__c}"/>
+                     <apex:column value="{!s.Reflux_Total_CQ_Target__c}"/>
+                     <apex:column value="{!s.Reflux_Disposable_QTD_Actual__c}"/>
+             </apex:pageBlockTable>
+             </apex:pageBlockSection>
+             
+             <apex:pageBlockSection title="Beacon Unit Sales Plan" columns="1">
+             <apex:pageBlockTable value="{!beaconSales}" var="s">
+                 
+                     <apex:column headerValue="Account Name">
+                         <apex:outputLink value="/{!s.id}"> {!s.Account_Name__c} </apex:outputLink>
+                     </apex:column>
+                     <apex:column value="{!s.Beacon_Base__c}"/>
+                     <apex:column value="{!s.Beacon_CQ_Growth_Goal__c}"/>
+                     <apex:column value="{!s.Beacon_Total_CQ_Target__c}"/>
+                     <apex:column value="{!s.Beacon_Base_QTD_Actual__c}"/>
+             </apex:pageBlockTable>
+             </apex:pageBlockSection>
+             
+         </apex:pageBlock>
+         
+         </apex:tab>
+          <apex:tab label="Diagnostic Territory Summary" name="name2" id="tabTwo" ontabenter="loadDiagnostic();" ontableave="resetDiagList();">
+          <div align="right"><button onclick="myFunction('{!$Component.diagpanel}')">Print</button></div>
+         <apex:pageBlock id="diagpanel">
+             <apex:pageBlockSection title="Filters">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Territory"></apex:outputLabel>
+                    <apex:selectList value="{!selectedTerriDiag}" size="1">
+                        <apex:selectOptions value="{!territoryptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!filterDiagByTerritory}" event="onchange" reRender="diagpanel"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Rep"></apex:outputLabel>
+                    <apex:selectList value="{!selectedRepDiag}" size="1">
+                        <apex:selectOptions value="{!repOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!filterDiagByRep}" event="onchange" reRender="theForm"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+             <apex:pageBlockSection title="PillCam Unit Sales Plan" columns="1">
+             <apex:pageBlockTable value="{!pillCampsalesPlanList}" var="s">
+                 
+                     <apex:column headerValue="Account Name">
+                         <apex:outputLink value="/{!s.id}"> {!s.Account_Name__c} </apex:outputLink>
+                     </apex:column>
+                     <apex:column value="{!s.PillCam_Disposable_Base__c}"/>
+                     <apex:column value="{!s.PillCam_CQ_Growth_Goal__c}"/>
+                     <apex:column value="{!s.PillCam_Total_CQ_Target__c}"/>
+                     
+                     <apex:column value="{!s.Pillcam_Disposable_QTD_Actual__c}"/>
+                     
+             </apex:pageBlockTable>
+             </apex:pageBlockSection>
+             <apex:pageBlockSection title="SmartPill Unit Sales Plan" columns="1">
+             <apex:pageBlockTable value="{!smartsalesPlanList}" var="s">
+                 
+                     <apex:column headerValue="Account Name">
+                         <apex:outputLink value="/{!s.id}"> {!s.Account_Name__c} </apex:outputLink>
+                     </apex:column>
+                     <apex:column value="{!s.SmartPill_Disposable_Base__c}"/>
+                     <apex:column value="{!s.SmartPill_CQ_Growth_Goal__c}"/>
+                     <apex:column value="{!s.SmartPill_Total_CQ_Target__c}"/>
+                     
+                     <apex:column value="{!s.SmartPill_Capsules_QTD_Actual__c}"/>
+                 
+             </apex:pageBlockTable>
+             </apex:pageBlockSection>
+         </apex:pageBlock>
+       
+          </apex:tab>
+
+  
+    </apex:tabPanel>
+       
+    </apex:form>
+ 
+</apex:page>

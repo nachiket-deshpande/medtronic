@@ -1,0 +1,23 @@
+<apex:page standardController="Contact" extensions="ContactLeadController">
+    <!--apex:variable var="uiTheme" value="lightningDesktop" rendered="{!$User.UIThemeDisplayed == 'Theme4t'}">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS103, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    </apex:variable-->
+    <apex:form >
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1">
+                <apex:selectList value="{!l.Existing_Account_Name__c}" multiselect="false" size="1" rendered="{!IF(accOptions.size > 1, true, false)}">
+                    <apex:selectOptions value="{!accOptions}"></apex:selectOptions>
+                </apex:selectList>
+                <apex:inputField value="{!l.Product_Portofolio__c}" required="true"/>
+                <apex:inputField value="{!l.Sales_Opportunity__c}" required="true"/>
+                <apex:inputField value="{!l.Description}"/>
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,6 @@
+<apex:component controller="SalesOrderItemsEmailTemplateController" access="global">
+  <apex:attribute id="ID" assignTo="{!salesOrderId}" name="thesalesOrderId" type="Id" description="The Sales Order Line's SF ID"/>    
+  <apex:repeat var="oi" value="{!OrderLines}">
+    <tr><td>{!oi.Quantity_Ordered__c}</td><td>{!oi.ItemDescription1__c}</td><td>{!oi.Sales_Rep__r.Name}</td></tr>
+  </apex:repeat>
+</apex:component>

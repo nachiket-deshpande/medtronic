@@ -1,0 +1,6 @@
+<apex:component controller="InvoiceItemsEmailTemplateController" access="global">
+  <apex:attribute id="ID" assignTo="{!invoiceId}" name="theInvoiceId" type="Id" description="The Invoice Line's SF ID"/>    
+  <apex:repeat var="il" value="{!InvoiceLines}">
+    <tr><td>{!il.Quantity__c}</td><td>{!il.ItemDescription1__c}</td><td>{!il.SalesRep__r.Name}</td></tr>
+  </apex:repeat>
+</apex:component>

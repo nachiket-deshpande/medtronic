@@ -1,0 +1,294 @@
+<apex:page showheader="true" sidebar="false">  
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <apex:stylesheet value="{!$Resource.twbs_bootstrapcss}"/>
+  </head>
+  <body>
+    <div class="twbs">
+      <div class="panel-group" id="accordion">
+        <!-- wake up -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#wakeup">
+              <img src="{!URLFOR($Resource.infographics,'img/wake_up-main.png')}" class="img-responsive" />
+            </a>
+          </div>
+          <div id="wakeup" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <img src="{!URLFOR($Resource.infographics,'img/wake_up-SalesRep.png')}" class="img-responsive" />
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_MTDQuota__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-MTD.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_QTDQuota__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-QTD.png')}" class="img-responsive" />
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_YTDQuota__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-YTD.png')}" class="img-responsive" />
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_pct2Quota__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-percent.png')}" class="img-responsive" />
+                  </a>
+                </div>
+               
+              </div>
+              <apex:outputPanel rendered="{!$Setup.SalesInfographicReportMap__c.showRM__c}" 
+                                layout="block" styleClass="row">
+                <div class="col-md-2">
+                  <img src="{!URLFOR($Resource.infographics,'img/wake_up-regional.png')}" class="img-responsive" />
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_MTDQuotaRM__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-MTD.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_QTDQuotaRM__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-QTD.png')}" class="img-responsive" />
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_YTDQuotaRM__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-YTD.png')}" class="img-responsive" />
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.wakeUp_pct2QuotaRM__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/wake_up-percent.png')}" class="img-responsive" />
+                  </a>
+                </div>
+              </apex:outputPanel>
+            </div>
+          </div>
+        </div>
+        <!-- morning coffee -->        
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#morningcoffee">
+              <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-main.png')}" class="img-responsive"  />
+            </a>
+          </div>
+          <div id="morningcoffee" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_Yesterday__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-yesterday_ship_ord.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_TodaysOrders__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-todaysorders.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <!--
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_OpenQuotes__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-open_quotes.png')}" class="img-responsive "/>
+                  </a>
+                </div>-->
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_ProdMatrix__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-prod_revenue.png')}" class="img-responsive "/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_Unprocessed__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-unprocessed_ord.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_List_Price_Reports__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-List_Price_Reports.png')}" class="img-responsive"/>
+                  </a>
+                </div>   
+              </div>
+              <br/>
+              <br/>
+              <div class="row">
+                <div class="col-md-4">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_TrafficLights__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-traffic_reports.png')}" class="img-responsive center-block"/>
+                  </a>
+                </div>
+
+                <div class="col-md-4">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.morningCoffee_AGU__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/morning_coffee-AGU.png')}" class="img-responsive center-block"/>
+                  </a>
+                </div>
+                       
+              </div>
+            </div> 
+          </div>
+        </div>
+        <!-- on the road -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#ontheroad">
+              <img src="{!URLFOR($Resource.infographics,'img/on_the_road-main.png')}" class="img-responsive" />
+            </a>
+          </div>
+          <div id="ontheroad" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.ontheRoad_Regional__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/on_the_road-regional.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.ontheRoad_Divisional__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/on_the_road-divisional.png')}" class="img-responsive "/>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.ontheRoad_National__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/on_the_road-national_float.png')}" class="img-responsive "/>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- deep dive -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#deepdive">
+              <img src="{!URLFOR($Resource.infographics,'img/deep_dive-main.png')}" class="img-responsive" />
+            </a>
+          </div>
+          <div id="deepdive" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <!--  
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_80_20__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-80-20_report.png')}" class="img-responsive"/>
+                  </a>
+                </div>-->
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_ProdPortPerf__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-prodportperf.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <!--<div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_Regression__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-regression.png')}" class="img-responsive"/>
+                  </a>
+                </div>-->
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_Normalized__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-normalized_ADS.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_Trending__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-trending.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_Assets__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-assets.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                     
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_CSSMgmt__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-cssmgmt.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+              </div>
+              
+              <br/>
+              <br/>               
+               <div class="row">
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_ServicePlans__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/deep_dive-Service_Plans.png')}" class="img-responsive"/>
+                  </a>
+                </div>    
+                                   
+             
+              <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.deepDive_RFA__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/focus_on_4-RFA_growth.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+              <br/>
+              <br/>
+             </div>      
+              
+            </div>
+          </div>
+        </div>
+        <!-- focus on four -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#focusonfour">
+              <img src="{!URLFOR($Resource.infographics,'img/Portfolio_Focused_Growth-main.png')}" class="img-responsive"/>
+            </a>
+          </div>
+          <div id="focusonfour" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focused_Growth_PillCam20__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-PillCam2.0.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focused_Growth_3B__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-3B.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focused_Expanding_The_Future__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-Expanding_The_Future.png')}" class="img-responsive"/>
+                  </a>
+                </div>                
+              </div>
+              <br/>
+              <br/>
+              <div class="row">
+
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focused_Growth_Land_and_Expand__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-Land_and_Expand.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+               <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focused_Growth_Inside_Sales__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Inside-Sales.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Focus_CPS_Bravo_and_Mano__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-CPS_Bravo_and_Mano_Focus.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+                <div class="col-md-2">
+                  <a href="{!$Setup.SalesInfographicReportMap__c.Portfolio_Lead_Generation_Strategy__c}" target="_blank">
+                    <img src="{!URLFOR($Resource.infographics,'img/Portfolio-Leads.png')}" class="img-responsive"/>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</apex:page>

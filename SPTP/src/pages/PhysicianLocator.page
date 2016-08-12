@@ -1,0 +1,110 @@
+<apex:page controller="LocatorController" cache="false" sidebar="false" showHeader="false" standardStylesheets="false">
+	<script type="text/javascript">
+  		var _gaq = _gaq || [];
+  		_gaq.push(['_setAccount', 'UA-37020991-1']);
+  		_gaq.push(['_trackPageview']);
+ 
+  		(function() {
+    		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  		})();
+	</script>
+
+    <apex:form >
+        <apex:panelGrid columns="5" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            <apex:outputText value="Zip Code"/>
+            <apex:inputText value="{!baseLocation}" size="10"/>
+            <apex:outputText value="Radius"/>
+            <apex:selectList value="{!radius}" size="1">
+                <apex:selectOption itemValue="5" itemLabel="5"/>
+                <apex:selectOption itemValue="10" itemLabel="10"/>
+                <apex:selectOption itemValue="15" itemLabel="15"/>
+                <apex:selectOption itemValue="20" itemLabel="20"/>
+                <apex:selectOption itemValue="50" itemLabel="50"/>
+                <apex:selectOption itemValue="100" itemLabel="100"/>
+            </apex:selectList>
+            <apex:commandButton value="Search" action="{!onSearch}"/>
+        </apex:panelGrid>
+        
+        <apex:outputPanel layout="black" style="color: red">
+            <apex:messages />
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" rendered="{!AND(searched,empty)}">
+            <span style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            Your search returned no results.
+            </span>
+        </apex:outputPanel>
+        
+        <apex:outputPanel layout="block" rendered="{!AND(searched,NOT(empty))}">
+            <table width="460px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                <apex:repeat var="row" value="{!resultRows}">
+                <tr>
+                    <td style="border-bottom: 1px solid black">
+                        <apex:outputField value="{!row.contact.Picture__c}" rendered="{! NOT( ISBLANK(row.contact.Picture__c) ) }"/>
+                        <apex:image value="{!$Resource.Silhouette}" rendered="{! ISBLANK(row.contact.Picture__c) }"/>
+                    </td>
+                    <td style="border-bottom: 1px solid black">
+                        <table width="400px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Physician</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Salutation}"/>&nbsp;
+                                    <apex:outputText value="{!row.contact.Name}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Institution</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Account.Name}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Phone</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Phone}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Address</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.MailingStreet}"/><br/>
+                                    <apex:outputText value="{!row.contact.MailingCity}"/>, 
+                                    <apex:outputText value="{!row.contact.MailingState}"/>&nbsp;
+                                    <apex:outputText value="{!row.contact.MailingPostalCode}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Website</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(row.contact.Website__c))}">
+                                        <a target="_blank" href="http://{!row.contact.Website__c}">{!row.contact.Website__c}</a>
+                                    </apex:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Distance (Miles)</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.distance}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                </apex:repeat>
+            </table>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

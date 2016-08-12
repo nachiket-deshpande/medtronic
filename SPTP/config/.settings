@@ -1,0 +1,17 @@
+{
+    "projectName": "SPTP",
+    "username": "nachiket.deshpande@barrx.com.sb",
+    "id": "6846e140-6073-11e6-9816-913c6cde3572",
+    "namespace": "",
+    "environment": "sandbox",
+    "loginUrl": "https://test.salesforce.com/",
+    "workspace": "E:\\SPTP",
+    "subscription": [
+        "ApexClass",
+        "ApexComponent",
+        "ApexPage",
+        "ApexTrigger",
+        "AuraDefinitionBundle",
+        "StaticResource"
+    ]
+}

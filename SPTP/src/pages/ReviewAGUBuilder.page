@@ -1,0 +1,48 @@
+<apex:page standardController="Account" extensions="AGUBuilderReviewController" action="{!onLoad}">
+	<apex:sectionHeader title="Review AGU Builder"/>
+	
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Close" action="{!onClose}"/>
+			</apex:pageBlockButtons>
+			
+			<apex:outputPanel layout="block" id="output">
+				<apex:selectList value="{!contactType}" size="1">
+					<apex:selectOptions value="{!contactTypes}"/>
+					<apex:actionSupport event="onchange" action="{!onLoad}" rerender="output"/>
+				</apex:selectList>
+				
+				<p/>
+				
+				<table class="list" border="0" cellspacing="0" cellpadding="0">
+				<tr class="headerRow">
+					<th scope="col" class="">Category</th>
+					<th scope="col" class="">Milestone</th>
+					<apex:repeat value="{!contacts}" var="contact">
+						<th scope="col" class="DateElement">
+							<apex:outputText value="{!contact.Name}"/>
+						</th>
+					</apex:repeat>
+				</tr>
+				<apex:repeat value="{!milestones}" var="milestone">
+					<tr class="dataRow {!milestone.classModifiers}" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}">
+						<th scope="row" class="dataCell"><apex:outputText value="{!milestone.category}"/></th>
+						<td class="dataCell"><apex:outputText value="{!milestone.name}"/></td>
+						<apex:repeat value="{!milestone.cells}" var="cell">
+							<td class="dataCell DateElement">
+								<apex:outputLink rendered="{!cell.eventExists}" value="/{!cell.event.Id}">
+									<apex:outputText value="{0,date,medium} {1,time,short}" title="{!cell.event.Description}">
+										<apex:param value="{!cell.event.StartDateTime}"/>
+										<apex:param value="{!cell.event.StartDateTime}"/>
+									</apex:outputText>
+								</apex:outputLink>
+							</td>
+						</apex:repeat>
+					</tr>
+				</apex:repeat>
+				</table>
+			</apex:outputPanel>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

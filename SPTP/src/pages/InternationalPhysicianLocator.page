@@ -1,0 +1,86 @@
+<apex:page controller="InternationalLocatorController" cache="false" sidebar="false" showHeader="false" standardStylesheets="false">
+    <apex:form >
+        <apex:panelGrid columns="5" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            <apex:outputText value="Country"/>
+            <apex:selectList value="{!baseLocation}" size="1">
+                <apex:selectOptions value="{!countries}" />
+            </apex:selectList>
+            <apex:commandButton value="Search" action="{!onSearch}"/>
+        </apex:panelGrid>
+        
+        <apex:outputPanel layout="black" style="color: red">
+            <apex:messages />
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" rendered="{!AND(searched,empty)}">
+            <span style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+            Your search returned no results.
+            </span>
+        </apex:outputPanel>
+        
+        <apex:outputPanel layout="block" rendered="{!AND(searched,NOT(empty))}">
+            <apex:repeat var="resultSection" value="{!resultSections}">
+            <apex:outputPanel ><br/><br/><b>Physicians in {!resultSection.cityName}</b><br/><br/></apex:outputPanel>
+            <table width="460px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                <apex:repeat var="row" value="{!resultSection.resultRows}">
+                <tr>
+                    <td style="border-bottom: 1px solid black">
+                        <apex:outputField value="{!row.contact.Picture__c}" rendered="{! NOT( ISBLANK(row.contact.Picture__c) ) }"/>
+                        <apex:image value="{!$Resource.Silhouette}" rendered="{! ISBLANK(row.contact.Picture__c) }"/>
+                    </td>
+                    <td style="border-bottom: 1px solid black">
+                        <table width="400px" style="font: normal 12px/18px Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Physician</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Salutation}"/>&nbsp;
+                                    <apex:outputText value="{!row.contact.Name}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Institution</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Account.Name}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Phone</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.Phone}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Address</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!row.contact.MailingStreet}"/><br/>
+                                    <apex:outputText value="{!row.contact.MailingCity}"/>, 
+                                    <apex:outputText value="{!row.contact.MailingState}"/>&nbsp;
+                                    <apex:outputText value="{!row.contact.MailingPostalCode}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel ><b>Website</b></apex:outputPanel>
+                                </td>
+                                <td>
+                                    <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(row.contact.Website__c))}">
+                                        <a target="_blank" href="http://{!row.contact.Website__c}">{!row.contact.Website__c}</a>
+                                    </apex:outputPanel>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                </apex:repeat>
+            </table>
+            </apex:repeat>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>
